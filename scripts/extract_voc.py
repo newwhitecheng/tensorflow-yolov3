@@ -16,8 +16,7 @@ import os
 import argparse
 import xml.etree.ElementTree as ET
 
-# sets=[('2007', 'train'), ('2007', 'val'), ('2007', 'test')]
-sets=[('2012', 'train'), ('2012', 'val')]
+sets=[('2007', 'train'), ('2007', 'val'), ('2007', 'test'), ('2012', 'train'), ('2012', 'val')]
 
 classes = ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
 
@@ -45,16 +44,16 @@ def convert_annotation(year, image_id, list_file):
 
 for year, image_set in sets:
     text_path = os.path.join(flags.voc_path, 'VOCdevkit/VOC%s/ImageSets/Main/%s.txt'%(year, image_set))
-    if not os.path.exists(text_path): continue
+    if not os.path.exists(text_path):
+        continue
     image_ids = open(text_path).read().strip().split()
     list_file_path = os.path.join(flags.dataset_info_path, '%s_%s.txt'%(year, image_set))
     list_file = open(list_file_path, 'w')
     for image_id in image_ids:
         image_path = os.path.join(flags.voc_path, 'VOCdevkit/VOC%s/JPEGImages/%s.jpg'%(year, image_id))
-        print("=>", image_path)
+        #print("=>", image_path)
         list_file.write(image_path)
         convert_annotation(year, image_id, list_file)
         list_file.write('\n')
     list_file.close()
-
 
