@@ -68,8 +68,12 @@ with tf.control_dependencies(update_ops):
     train_op = optimizer.minimize(loss[0], var_list=update_vars, global_step=global_step)
 
 sess.run([tf.global_variables_initializer(), tf.local_variables_initializer()])
-saver_to_restore.restore(sess, "./checkpoint/yolov3.ckpt")
+try:
+    saver_to_restore.restore(sess, "./checkpoint/yolov3.ckpt")
+except Exception:
+    pass
 saver = tf.train.Saver(max_to_keep=2)
+
 
 for step in range(STEPS):
     run_items = sess.run([train_op, write_op, y_pred, y_true] + loss, feed_dict={is_training:True})
@@ -79,7 +83,8 @@ for step in range(STEPS):
 
     writer_train.add_summary(run_items[1], global_step=step)
     writer_train.flush() # Flushes the event file to disk
-    if (step+1) % SAVE_INTERNAL == 0: saver.save(sess, save_path="./checkpoint/yolov3.ckpt", global_step=step+1)
+    if (step+1) % SAVE_INTERNAL == 0:
+        saver.save(sess, save_path="./checkpoint/yolov3.ckpt", global_step=step+1)
 
     print("=> STEP %10d [TRAIN]:\tloss_xy:%7.4f \tloss_wh:%7.4f \tloss_conf:%7.4f \tloss_class:%7.4f"
         %(step+1, run_items[5], run_items[6], run_items[7], run_items[8]))
