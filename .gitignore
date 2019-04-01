@@ -1,7 +1,7 @@
 # Build and Release Folders
 /checkpoint/*
 /backup
-/log/
+/logs/
 VOC_tfrecord
 bin-debug/
 bin-release/
