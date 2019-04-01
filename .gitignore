@@ -1,4 +1,8 @@
 # Build and Release Folders
+/checkpoint/*
+/backup
+/log/
+VOC_tfrecord
 bin-debug/
 bin-release/
 [Oo]bj/
